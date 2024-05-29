@@ -16,7 +16,6 @@ export async function actionToAddUser(fromData: FormData){
   } catch (error) {
     console.error(error)
     throw new Error("创建用户失败");
-    
   }
 
 }

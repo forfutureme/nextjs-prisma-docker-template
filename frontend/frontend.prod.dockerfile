@@ -25,7 +25,7 @@ ENV ENV_VARIABLE=${ENV_VARIABLE}
 ARG NEXT_PUBLIC_ENV_VARIABLE
 ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
 ARG ENV_VARIABLE
-ENV DATABASE_URL=postgresql://template:123456@postgres:5432/template?schema=prod&connect_timeout=300
+ENV DATABASE_URL=postgresql://template:123456@localhost:5432/template?schema=prod&connect_timeout=300
 
 RUN npx prisma generate
 
@@ -56,7 +56,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma/
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules/.bin ./node_modules/.bin
 
 # 环境变量必须在构建时指定
 ARG ENV_VARIABLE
@@ -64,13 +63,10 @@ ENV ENV_VARIABLE=${ENV_VARIABLE}
 ARG NEXT_PUBLIC_ENV_VARIABLE
 ENV NEXT_PUBLIC_ENV_VARIABLE=${NEXT_PUBLIC_ENV_VARIABLE}
 ARG ENV_VARIABLE
-ENV DATABASE_URL=postgresql://template:123456@postgres:5432/template?schema=prod
+ENV DATABASE_URL=postgresql://template:123456@localhost:5432/template?schema=prod
 
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # 不要在这里公开端口 可以用compose来处理
 
 CMD ["node", "server.js"]
-
-#切换回 root用户    因为还需要在 容器里 执行prisma deloy命令 同步数据库???????
-USER root

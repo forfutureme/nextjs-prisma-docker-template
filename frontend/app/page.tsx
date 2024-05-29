@@ -1,18 +1,15 @@
-import  UserList  from "@/app/ui/userList";
+import  UserList, {UserListSkeleton}  from "@/app/ui/userList";
 import AddUser from "@/app/ui/addUser";
-import ErrorBoundary from "./ui/errorBoundary";
-import Error from "./error";
+import { Suspense } from "react";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <h2>hello User</h2>
      <AddUser />
-
-
-     <ErrorBoundary fallback={<Error />}>
+     <Suspense fallback={<UserListSkeleton />}>
       <UserList />
-     </ErrorBoundary>
-    
+     </Suspense>
     </main>
   );
 }
