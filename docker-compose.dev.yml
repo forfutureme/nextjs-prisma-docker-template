@@ -5,6 +5,7 @@ services:
     build:
       context: ./frontend
       dockerfile: frontend.dev.dockerfile
+      network: host
     environment:
       ENV_VARIABLE: production_server_only_variable
       NEXT_PUBLIC_ENV_VARIABLE: production_public_variable
@@ -25,10 +26,10 @@ services:
     build:
       context: ./back-manage
       dockerfile: backmanage.dev.dockerfile
+      network: host
     environment:
       ENV_VARIABLE: production_server_only_variable
       NEXT_PUBLIC_ENV_VARIABLE: production_public_variable
-      DATABASE_URL: postgresql://template:123456@postgres:5432/template?schema=dev
     volumes:
       - ./back-manage/app:/app/app
       - ./back-manage/prisma:/app/prisma
