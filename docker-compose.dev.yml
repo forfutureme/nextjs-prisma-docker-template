@@ -1,0 +1,75 @@
+name: webapptemplate
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: frontend.dev.dockerfile
+    environment:
+      ENV_VARIABLE: production_server_only_variable
+      NEXT_PUBLIC_ENV_VARIABLE: production_public_variable
+      NEXT_BACK_MANAGE_API_HOST: http://backmanage:3000/api
+      DATABASE_URL: postgresql://template:123456@postgres:5432/template?schema=dev
+    volumes:
+      - ./frontend/app:/app/app
+      - ./frontend/prisma:/app/prisma
+      - ./frontend/public/:/app/public
+    restart: always
+    ports:
+      - '3309:3100'
+    networks:
+      - template_net
+    depends_on:
+      - backmanage
+  backmanage:
+    build:
+      context: ./back-manage
+      dockerfile: backmanage.dev.dockerfile
+    environment:
+      ENV_VARIABLE: production_server_only_variable
+      NEXT_PUBLIC_ENV_VARIABLE: production_public_variable
+      DATABASE_URL: postgresql://template:123456@postgres:5432/template?schema=dev
+    volumes:
+      - ./back-manage/app:/app/app
+      - ./back-manage/prisma:/app/prisma
+      - ./back-manage/public/:/app/public
+    restart: always
+    ports:
+      - '3721:3000'
+    networks:
+      - template_net
+    depends_on:
+      - postgres
+      - redis
+  postgres:
+    image: postgres:16
+    restart: always
+    shm_size: 128mb
+    ports:
+      - '5532:5432'
+    environment:
+      POSTGRES_USER: template
+      POSTGRES_PASSWORD: 123456
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - 'postgresql_data:/var/lib/postgresql/data'
+    networks:
+      - template_net
+
+  redis:
+    image: redis:7.2
+    restart: always
+    command: redis-server --save 60 1 --loglevel warning --appendonly yes
+    ports:
+      - '6479:6379'
+    volumes:
+      - 'reids_data:/data'
+    networks:
+      - template_net
+
+networks:
+  template_net:
+
+volumes:
+  reids_data:
+  postgresql_data:
