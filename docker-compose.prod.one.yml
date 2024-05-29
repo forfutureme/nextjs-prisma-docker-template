@@ -4,7 +4,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: frontend.prod.dockerfile
+      dockerfile: frontend.prod.one.dockerfile
       args:
         ENV_VARIABLE: production_server_only_variable
         NEXT_PUBLIC_ENV_VARIABLE: production_public_variable
