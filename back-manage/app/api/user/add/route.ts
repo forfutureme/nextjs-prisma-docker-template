@@ -4,6 +4,7 @@
  * @Desc: 创建用户
  */
 import { createUser } from "@/app/model/user"
+export const dynamic = 'force-dynamic'
 export async function POST (req: Request){
   const formData = await req.formData()
   const name = formData.getAll('name')[0] as string
