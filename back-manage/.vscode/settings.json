@@ -1,0 +1,25 @@
+{
+  "eslint.enable": true, //是否开启vscode的eslint
+  "eslint.options": {
+    //指定vscode的eslint所处理的文件的后缀
+    "extensions": [".js", ".jsx", ".ts", ".tsx", ".svg"]
+  },
+  "eslint.validate": [
+    //确定校验准则
+    "vue",
+    "html",
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact"
+  ],
+  "stylelint.enable": true,
+  "[scss]": {
+    "editor.formatOnSave": false
+  },
+  //是否在保存的时候自动fix eslint
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
+  }
+}
