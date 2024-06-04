@@ -15,11 +15,11 @@ RUN \
 
 COPY . .
 
+RUN npx prisma generate
 RUN if [ -d migrations ]; then npx prisma migrate dev --name init ; \
 		else npx prisma migrate dev --name update; \
 		fi
 
-RUN npx prisma generate
 
 CMD \
   if [ -f yarn.lock ]; then yarn dev; \
